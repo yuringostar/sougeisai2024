@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import React, { useRef, useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import '../MapPage.css';
+import mapImage from '../assets/images/map_test.png';
 
 export const MapPage: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -26,7 +27,11 @@ export const MapPage: React.FC = () => {
                     dragConstraints={containerRef}
                     animate={position}
                 >
-                    <div className="panel panel1" id='panel1'>
+
+                    <div>
+                        <img src={mapImage} alt="map" />
+                    </div>
+                    {/*<div className="panel panel1" id='panel1'>
                         <div className="text">Panel 1</div>
                     </div>
                     <div className="panel panel2" id='panel2'>
@@ -37,7 +42,7 @@ export const MapPage: React.FC = () => {
                     </div>
                     <div className="panel panel4">
                         <div className="text">Panel 4</div>
-                    </div>
+                    </div>*/}
                 </motion.div>
             </motion.div>
         </div>
