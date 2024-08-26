@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@use-gesture/react": "^10.3.1",
     "framer-motion": "^11.3.30",
     "jsqr": "^1.4.0",
     "react": "^18.3.1",

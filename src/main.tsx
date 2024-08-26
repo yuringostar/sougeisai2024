@@ -1,37 +1,28 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
-
-/*createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    
-  
-
-    <App />
-
-  
-
-
-
-  </StrictMode>,
-)*/
-
-
-
-// src/index.tsx
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { AppRoutes } from './Routes';
-import { BrowserRouter } from 'react-router-dom' // 追加する
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+
+// コンポーネントのインポート
+import { Layout } from './components/Layout';
+import { MapPage } from './components/MapPage';
+import { QrCodeScanner} from './components/QrCodeScanner';
+
+const container = document.getElementById('app');
+const root = createRoot(container!); 
+
 root.render(
-  <React.StrictMode>
+    <React.StrictMode>
+
     <BrowserRouter>
-      <AppRoutes />
-    </BrowserRouter>
-  </React.StrictMode>
+        
+        <Routes>
+            
+            <Route path="/" element={<Layout />}>
+                <Route path="/map" element={<QrCodeScanner />} />
+            </Route>
+        </Routes>
+        </BrowserRouter>
+    </React.StrictMode>
+
 );

@@ -1,9 +1,25 @@
-import { ReactNode } from 'react';
+import { FC } from "react"
 
-type Props = { children: ReactNode };
+//Outletをインポート
+import { Outlet } from 'react-router-dom';
 
-const Layout = ({ children }: Props) => {
-  return <div>{children}</div>;
-};
 
-export default Layout;
+export const Layout: FC = () => {
+
+
+    return (
+        <>
+            <header>
+                ヘッダー
+            </header>
+
+            //ここが切り替わる
+            <Outlet />
+
+            <footer>
+                フッター
+            </footer>
+        </>
+    )
+
+}

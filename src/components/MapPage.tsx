@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import React, { useRef, useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import '../MapPage.css';
-import mapImage from '../assets/images/map_test.png';
+import mapImage from '../assets/images/__back.png';
 
 export const MapPage: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -29,7 +29,7 @@ export const MapPage: React.FC = () => {
                 >
 
                     <div>
-                        <img src={mapImage} alt="map" />
+                        <img src={mapImage} alt="map" className='map' />
                     </div>
                     {/*<div className="panel panel1" id='panel1'>
                         <div className="text">Panel 1</div>
