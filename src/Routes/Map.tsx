@@ -4,13 +4,13 @@ import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import { Link } from "react-router-dom";
 import Sketch from "react-p5";
 import p5Types from "p5";
-import map from "../assets/images/tmp/_map1.png";
-import map2 from "../assets/images/tmp/_map2.png";
-import map3 from "../assets/images/tmp/_map3.png";
-import icon from "../assets/images/tmp/_icon.png";
+import map from "../assets/images/tmp/map1.png";
+import map2 from "../assets/images/tmp/map2.png";
+import map3 from "../assets/images/tmp/map3.png";
+import icon from "../assets/images/tmp/icon.png";
 
-import upImg from "../assets/images/tmp/_up.png";
-import downImg from "../assets/images/tmp/_down.png";
+import upImg from "../assets/images/tmp/up.png";
+import downImg from "../assets/images/tmp/down.png";
 import { Vector2 } from "../lib/Map/Types";
 import Icon from "../lib/Map/Icon";
 
