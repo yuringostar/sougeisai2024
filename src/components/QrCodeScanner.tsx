@@ -8,7 +8,7 @@ type Props = {}
 const QrCodeScanner: FC<Props> = () => {
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [result, setResult] = useState('')
+  const [result, _setResult] = useState('')
   const [error, setError] = useState('')
   const navigate = useNavigate();
 

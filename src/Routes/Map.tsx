@@ -17,16 +17,16 @@ import Icon from "../lib/Map/Icon";
 import { useEffect } from 'react';
 
 const Map: FC = () => {
-    const [mapP5s, setMapP5s] = useState<p5Types.Image[]>([]);
-    const [icons, setIcons] = useState<Icon[][]>([]);
-    const [imageSize, setImageSize] = useState<Vector2>({x: 0, y: 0});
-    const [imageRatio, setImageRatio] = useState<number>(0.0);
+    const [mapP5s, _setResultsetMapP5s] = useState<p5Types.Image[]>([]);
+    const [icons, _setIcons] = useState<Icon[][]>([]);
+    const [imageSize, _setImageSize] = useState<Vector2>({x: 0, y: 0});
+    const [_imageRatio, setImageRatio] = useState<number>(0.0);
     const [origin, setOrigin] = useState<Vector2>({x: 0, y: 0});
-    const [dragOffset, setDragOffset] = useState<Vector2>({x: 0, y: 0});
+    const [dragOffset, _setDragOffset] = useState<Vector2>({x: 0, y: 0});
     const [dragRatio, setDragRatio] = useState<number>(1);
     const [zoom, setZoom] = useState<number>(1);
     const [floor, setFloor] = useState<number>(0);
-    const [updown, setUpdown] = useState<p5Types.Image[]>([]);
+    const [updown, _setUpdown] = useState<p5Types.Image[]>([]);
     const [updownSize, setUpdownSize] = useState<Vector2>({x: 0, y: 0});
     const [updownPos, setUpdownPos] = useState<Vector2>({x: 0, y: 0});
 
@@ -137,6 +137,7 @@ const Map: FC = () => {
     const mouseWheel = (p5: p5Types) => {
         const zoomSpeed = 0.2;  // ズームスピードを速くするために値を増加
         let newZoom = zoom;
+        //@ts-ignore
         if (p5._mouseWheelDeltaY < 0) {
             newZoom += zoomSpeed;  // ズームイン
         } else {
