@@ -7,12 +7,14 @@ import p5Types from "p5";
 import map from "../assets/images/tmp/map1.png";
 import map2 from "../assets/images/tmp/map2.png";
 import map3 from "../assets/images/tmp/map3.png";
+import map4 from "../assets/images/tmp/test2.png";
 import icon from "../assets/images/tmp/icon.png";
 
 import upImg from "../assets/images/tmp/up.png";
 import downImg from "../assets/images/tmp/down.png";
 import { Vector2 } from "../lib/Map/Types";
 import Icon from "../lib/Map/Icon";
+import { useEffect } from 'react';
 
 const Map: FC = () => {
     const [mapP5s, setMapP5s] = useState<p5Types.Image[]>([]);
@@ -28,6 +30,20 @@ const Map: FC = () => {
     const [updownSize, setUpdownSize] = useState<Vector2>({x: 0, y: 0});
     const [updownPos, setUpdownPos] = useState<Vector2>({x: 0, y: 0});
 
+    useEffect(() => {
+        const handleTouchMove = (event: TouchEvent) => {
+            event.preventDefault(); // デフォルトのスクロール動作を防ぐ
+        };
+
+        // タッチスクロール時にデフォルトの動作を防ぐ
+        document.addEventListener('touchmove', handleTouchMove, { passive: false });
+
+        // クリーンアップ
+        return () => {
+            document.removeEventListener('touchmove', handleTouchMove);
+        };
+    }, []);
+
     const handleMouseEnter = () => {
         disableBodyScroll(document.body);
     }
@@ -38,6 +54,7 @@ const Map: FC = () => {
         mapP5s.push(p5.loadImage(map));
         mapP5s.push(p5.loadImage(map2));
         mapP5s.push(p5.loadImage(map3));
+        mapP5s.push(p5.loadImage(map4));
 
         updown.push(p5.loadImage(upImg));
         updown.push(p5.loadImage(downImg));
@@ -65,6 +82,19 @@ const Map: FC = () => {
         setUpdownSize({x: 50, y: 50});
         setUpdownPos({x: 0, y: p5.windowHeight-100});
     }
+
+
+    const zoomIn = () => {
+        setZoom((prevZoom) => Math.min(prevZoom + 0.2, 5)); // 最大5倍
+    }
+
+    const zoomOut = () => {
+        setZoom((prevZoom) => Math.max(prevZoom - 0.2, 0.5)); // 最小0.5倍
+    }
+
+
+
+
 
     const draw = (p5: p5Types) => {
         p5.background(255);
@@ -105,14 +135,16 @@ const Map: FC = () => {
     }
 
     const mouseWheel = (p5: p5Types) => {
-        const zoomSpeed = 0.1;
-        if(p5._mouseWheelDeltaY < 0){
-            setZoom(zoom + zoomSpeed);
+        const zoomSpeed = 0.2;  // ズームスピードを速くするために値を増加
+        let newZoom = zoom;
+        if (p5._mouseWheelDeltaY < 0) {
+            newZoom += zoomSpeed;  // ズームイン
+        } else {
+            newZoom -= zoomSpeed;  // ズームアウト
         }
-        else{
-            setZoom(zoom - zoomSpeed);
-        }
-        setDragRatio(1/zoom);
+        console.log(`New Zoom: ${newZoom}`); // デバッグ用ログ
+        setZoom(newZoom);
+        setDragRatio(1 / newZoom);  // ズームに応じてドラッグ感度を調整
     }
 
     const mouseDragged = (p5: p5Types) => {
@@ -141,15 +173,19 @@ const Map: FC = () => {
 
     return (
         <div className="container">
-            <div className="fixed bottom-5 left-5 z-50 w-10">
+            <div className="fixed bottom-5 right-7 z-50 w-10">
                 {/* <button onClick={handleUp} className={"mb-8 bg-orange-500" + (isMaxFloor?" opacity-50":"")} type="button">
                     <img src={upImg} alt="" />
                 </button>
                 <button onClick={handleDown} className={"bg-orange-500" + (isMinFloor?" opacity-50":"")} type="button">
                     <img src={downImg} alt="" />
                 </button> */}
+               
+                <button onClick={zoomIn} className="mb-2 bg-blue-500 p-2">Zoom In</button>
+                <button onClick={zoomOut} className="bg-blue-500 p-2">Zoom Out</button>
+            
             </div>
-            <div className="fixed bottom-5 right-5 z-50">
+            <div className="fixed bottom-5 right-20 z-50">
                 <Link to="/scan">
                     <div className="w-20 h-20 bg-orange-500">QR</div>
                 </Link>

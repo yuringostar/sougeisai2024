@@ -15,7 +15,7 @@ const QrCodeScanner: FC<Props> = () => {
   useEffect(() => {
     const constraints = {
       video: {
-        facingMode: 'environment',
+        facingMode: { ideal: 'environment' },
         width: { ideal: 300 },
         height: { ideal: 300 },
       },
@@ -56,19 +56,24 @@ const QrCodeScanner: FC<Props> = () => {
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
         // QRコードをスキャンする
-        const qrCodeData = jsQR(imageData.data, imageData.width, imageData.height)
-        if (qrCodeData) {
-          if (qrCodeData.data == 'panel2')
-            navigate('/map#panel2');
-          if (qrCodeData.data !== 'https://vaundy.jp/') {
-            setError('対応していないQRコードです')
-            setTimeout(scanQrCode, 100) // スキャンの頻度を制限
-            return
+        const qrCode = jsQR(imageData.data, imageData.width, imageData.height)
+        if (qrCode) {
+          const qrData = qrCode.data // 例: "x:100,y:200"
+          
+          // QRコードのデータが座標だと仮定 (例えば "x:100,y:200")
+          const coordinates = qrData.match(/x:(\d+),y:(\d+)/);
+          if (coordinates) {
+            const x = coordinates[1];
+            const y = coordinates[2];
+            
+            // 座標をURLに渡して/mapへ遷移
+            navigate(`/map?x=${x}&y=${y}`);
+          } else {
+            setError('QRコードに座標データが含まれていません')
           }
-          setResult(qrCodeData.data)
-          return
+        } else {
+          setTimeout(scanQrCode, 100) // 100ミリ秒ごとに再スキャン
         }
-        setTimeout(scanQrCode, 100)
       }
     }
   }
