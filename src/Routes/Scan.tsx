@@ -4,8 +4,7 @@ import QrCodeScanner from "../components/QrCodeScanner";
 
 const Scan : FC = () => {
     return (
-        <div>
-            <h1>Scan</h1>
+        <div>        
             <QrCodeScanner />
         </div>
     );

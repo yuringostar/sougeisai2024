@@ -4,14 +4,18 @@ import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import { Link } from "react-router-dom";
 import Sketch from "react-p5";
 import p5Types from "p5";
-import map from "../assets/images/tmp/map1.png";
-import map2 from "../assets/images/tmp/map2.png";
-import map3 from "../assets/images/tmp/map3.png";
-import map4 from "../assets/images/tmp/mapCoordinate.png";
-import icon from "../assets/images/tmp/icon.png";
+import map from "../assets/images/tmp/floor1.png";
+import map2 from "../assets/images/tmp/floor2.png";
+import map3 from "../assets/images/tmp/floor3.png";
+import map4 from "../assets/images/tmp/floor4.png";
+import map5 from "../assets/images/tmp/floor5.png";
+import qr from "../assets/images/tmp/qr.png"
+import zoomInBuuton from "../assets/images/tmp/zoomIn.png"
+import zoomOutButton from "../assets/images/tmp/zoomOut.png"
+//import icon from "../assets/images/tmp/icon.png";
 
-import upImg from "../assets/images/tmp/up.png";
-import downImg from "../assets/images/tmp/down.png";
+import upImg from "../assets/images/tmp/up_2.png";
+import downImg from "../assets/images/tmp/down_2.png";
 import { Vector2 } from "../lib/Map/Types";
 import Icon from "../lib/Map/Icon";
 import { useEffect } from 'react';
@@ -74,6 +78,8 @@ const Map: FC = () => {
         mapP5s.push(p5.loadImage(map2));
         mapP5s.push(p5.loadImage(map3));
         mapP5s.push(p5.loadImage(map4));
+        mapP5s.push(p5.loadImage(map5));
+
 
         updown.push(p5.loadImage(upImg));
         updown.push(p5.loadImage(downImg));
@@ -218,13 +224,19 @@ const Map: FC = () => {
                     <img src={downImg} alt="" />
                 </button> */}
                
-                <button onClick={zoomIn} className="mb-2 bg-blue-500 p-2">Zoom In</button>
-                <button onClick={zoomOut} className="bg-blue-500 p-2">Zoom Out</button>
+                <button onClick={zoomIn} className="mb-2 p-1">
+                    <img className="object-contain w-20" src={zoomInBuuton} alt="zoomIn" />
+                </button>
+                <button onClick={zoomOut} className=" p-1">
+                    <img src={zoomOutButton} alt="zoomOut" className="w-20"/>
+                </button>
             
             </div>
             <div className="fixed bottom-5 right-20 z-50">
                 <Link to="/scan">
-                    <div className="w-20 h-20 bg-orange-500">QR</div>
+                    <div className="w-20 h-20 ">
+                        <img src={qr} alt="qr" />
+                    </div>
                 </Link>
             </div>
             <div id="map"  onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
