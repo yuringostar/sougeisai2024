@@ -3,6 +3,7 @@ import jsQR from 'jsqr'
 
 import { useRef, useState, useEffect, FC } from 'react'
 import { useNavigate } from 'react-router-dom';
+import frame from '../assets/images/tmp/scanFrame.png'
 
 type Props = {}
 const QrCodeScanner: FC<Props> = () => {
@@ -83,9 +84,10 @@ const QrCodeScanner: FC<Props> = () => {
     <div>
       {!result && (
         <div className='flex justify-center'>
-          <div className='relative h-[300px] w-[300px]'>
-            <video ref={videoRef} autoPlay playsInline className='absolute left-0 top-0 -z-50 h-[300px] w-[300px]' />
-            <canvas ref={canvasRef} width='300' height='300' className='absolute left-0 top-0' />
+          <div className='relative mt-20'>
+            <img className='w-full h-auto' src={frame} alt="" />
+            <video ref={videoRef} autoPlay playsInline className='absolute w-3/5 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 -z-50 aspect-square' />
+            <canvas ref={canvasRef} width='300' height='300' className='absolute w-3/5 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 aspect-square' />
           </div>
         </div>
       )}

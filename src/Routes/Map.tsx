@@ -131,6 +131,7 @@ const Map: FC = () => {
 
     const draw = (p5: p5Types) => {
         p5.background(255);
+        p5.frameRate(30);
         
         p5.push();
         p5.imageMode(p5.CENTER);
