@@ -7,7 +7,7 @@ import p5Types from "p5";
 import map from "../assets/images/tmp/map1.png";
 import map2 from "../assets/images/tmp/map2.png";
 import map3 from "../assets/images/tmp/map3.png";
-import map4 from "../assets/images/tmp/test2.png";
+import map4 from "../assets/images/tmp/mapCoordinate.png";
 import icon from "../assets/images/tmp/icon.png";
 
 import upImg from "../assets/images/tmp/up.png";
@@ -15,20 +15,39 @@ import downImg from "../assets/images/tmp/down.png";
 import { Vector2 } from "../lib/Map/Types";
 import Icon from "../lib/Map/Icon";
 import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const Map: FC = () => {
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const initialX = parseInt(queryParams.get('x') || '0', 10);
+    const initialY = parseInt(queryParams.get('y') || '0', 10);
     const [mapP5s, _setResultsetMapP5s] = useState<p5Types.Image[]>([]);
     const [icons, _setIcons] = useState<Icon[][]>([]);
     const [imageSize, _setImageSize] = useState<Vector2>({x: 0, y: 0});
     const [_imageRatio, setImageRatio] = useState<number>(0.0);
-    const [origin, setOrigin] = useState<Vector2>({x: 0, y: 0});
+    const [origin, setOrigin] = useState<Vector2>({x: initialX, y: initialY});
     const [dragOffset, _setDragOffset] = useState<Vector2>({x: 0, y: 0});
     const [dragRatio, setDragRatio] = useState<number>(1);
     const [zoom, setZoom] = useState<number>(1);
-    const [floor, setFloor] = useState<number>(0);
+    //const [floor, setFloor] = useState<number>(0);
     const [updown, _setUpdown] = useState<p5Types.Image[]>([]);
     const [updownSize, setUpdownSize] = useState<Vector2>({x: 0, y: 0});
     const [updownPos, setUpdownPos] = useState<Vector2>({x: 0, y: 0});
+
+
+    const initialFloor = parseInt(queryParams.get('floor') || '0', 10);
+  
+    const [floor, setFloor] = useState<number>(initialFloor);
+
+  
+    console.log(`x: ${initialX}, y: ${initialY}, floor: ${floor}`);
+
+    /*useEffect(() => {
+        setOrigin({ x: initialX, y: initialY });
+        setFloor(initialFloor);
+        console.log(initialX);
+    }, []);*/
 
     useEffect(() => {
         const handleTouchMove = (event: TouchEvent) => {
@@ -59,18 +78,32 @@ const Map: FC = () => {
         updown.push(p5.loadImage(upImg));
         updown.push(p5.loadImage(downImg));
 
-        for(let i = 0; i < mapP5s.length; i++){
+        /*for(let i = 0; i < mapP5s.length; i++){
             icons.push([]);
             for(let j = 0; j < 10; j++){
                 icons[i].push(new Icon(p5.loadImage(icon), {x: 0, y: 0}));
             }
-        }
+        }*/
     }
 
     const setup = (p5: p5Types, canvasParentRef: Element) =>{
+  
+        //console.log(initialX);
         p5.createCanvas(p5.windowWidth, p5.windowHeight).parent(canvasParentRef);
         setImageRatio(mapP5s[0].height / mapP5s[0].width);
-        setOrigin({x: p5.windowWidth/2, y: p5.windowHeight/2});
+        
+
+        if(initialX||initialY){
+            setOrigin({ x: initialX, y: initialY });
+            setZoom(2);
+        }else{
+            setOrigin({x: p5.windowWidth/2, y: p5.windowHeight/2});
+            //setZoom(0.5);
+        }
+
+        if(initialFloor){
+            setFloor(initialFloor);
+        }
 
         for(let i = 0; i < icons.length; i++){
             for(let j = 0; j < icons[i].length; j++){
@@ -106,6 +139,8 @@ const Map: FC = () => {
         p5.translate(-origin.x, -origin.y);
         p5.translate(dragOffset.x, dragOffset.y);
         p5.image(mapP5s[floor], origin.x, origin.y, imageSize.x, imageSize.y);
+        
+        
 
         for(let i = 0; i < icons.length; i++){
             for(let j = 0; j < icons[i].length; j++){
@@ -135,7 +170,7 @@ const Map: FC = () => {
     }
 
     const mouseWheel = (p5: p5Types) => {
-        const zoomSpeed = 0.2;  // ズームスピードを速くするために値を増加
+        const zoomSpeed = 0.5;  // ズームスピードを速くするために値を増加
         let newZoom = zoom;
         //@ts-ignore
         if (p5._mouseWheelDeltaY < 0) {

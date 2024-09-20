@@ -58,21 +58,22 @@ const QrCodeScanner: FC<Props> = () => {
         // QRコードをスキャンする
         const qrCode = jsQR(imageData.data, imageData.width, imageData.height)
         if (qrCode) {
-          const qrData = qrCode.data // 例: "x:100,y:200"
-          
-          // QRコードのデータが座標だと仮定 (例えば "x:100,y:200")
-          const coordinates = qrData.match(/x:(\d+),y:(\d+)/);
+          const qrData = qrCode.data; // 例: "x:100,y:200,floor:1"
+  
+          // QRコードのデータが座標とフロア情報を含んでいると仮定 (例えば "x:100,y:200,floor:1")
+          const coordinates = qrData.match(/x:(\d+),y:(\d+),floor:(\d+)/);
           if (coordinates) {
             const x = coordinates[1];
             const y = coordinates[2];
-            
-            // 座標をURLに渡して/mapへ遷移
-            navigate(`/map?x=${x}&y=${y}`);
+            const floor = coordinates[3];
+            console.log(`x: ${x}, y: ${y}, floor: ${floor}`);
+            // 座標とフロア情報をURLに渡して/mapへ遷移
+            navigate(`/map?x=${x}&y=${y}&floor=${floor}`);
           } else {
-            setError('QRコードに座標データが含まれていません')
+            setError('QRコードに座標またはフロアデータが含まれていません');
           }
         } else {
-          setTimeout(scanQrCode, 100) // 100ミリ秒ごとに再スキャン
+          setTimeout(scanQrCode, 100); // 100ミリ秒ごとに再スキャン
         }
       }
     }
